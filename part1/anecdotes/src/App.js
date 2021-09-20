@@ -8,15 +8,9 @@ const Button = ({handleClick, text}) => {
             {text}
         </button>
     )
-}
+};
 
-const Score = ({text}) => {
-    return (
-        <div>
-            {text}
-        </div>
-    )
-}
+const Score = ({text}) => <p> {text} </p>;
 
 const App = () => {
     const anecdotes = [
@@ -31,6 +25,7 @@ const App = () => {
 
     const [selected, setSelected] = useState(0);
     const [points, setPoints] = useState(Array(7).fill(0));
+    const [mostPoints, setMostPoints] = useState(0);
     const prevPoints = [...points];
 
     const randomise = () => Math.floor((Math.random() * anecdotes.length));
@@ -39,15 +34,22 @@ const App = () => {
 
     const handleAddPoint = () => {
         setPoints(prevPoints, prevPoints[selected] += 1);
+        handleMostPoints();
     }
 
+    const handleMostPoints = () => {
+        setMostPoints(points.indexOf(Math.max(...points)));
+    }
 
     return (
         <div>
+            <h1>Anecdote of the day</h1>
             <Anecdote text={anecdotes} selection={selected}/>
             <Score text={`Has ${points[selected]} votes`}/>
             <Button handleClick={handleAddPoint} text={'Vote'}/>
             <Button handleClick={handleSelected} text={'Next anecdote'}/>
+            <h1>Anecdote with most votes</h1>
+            <Anecdote text={anecdotes} selection={mostPoints}/>
         </div>
     )
 }
