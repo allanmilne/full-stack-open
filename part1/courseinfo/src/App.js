@@ -8,12 +8,14 @@ const Header = ({course}) => {
     )
 }
 
-const Content = ({course}) => {
+const Content = ({parts}) => {
+    const [part1, part2, part3] = parts;
+
     return (
         <div>
-            <Part part={course.parts[0].name} exercises={course.parts[0].exercises}/>
-            <Part part={course.parts[1].name} exercises={course.parts[1].exercises}/>
-            <Part part={course.parts[2].name} exercises={course.parts[2].exercises}/>
+            <Part part={part1.name} exercises={part1.exercises}/>
+            <Part part={part2.name} exercises={part2.exercises}/>
+            <Part part={part3.name} exercises={part3.exercises}/>
         </div>
     )
 }
@@ -28,10 +30,12 @@ const Part = ({part, exercises}) => {
     )
 }
 
-const Total = ({course}) => {
+const Total = ({parts}) => {
+    const [part1, part2, part3] = parts;
+
     return (
         <div>
-            <p>Number of exercises {course.parts[0].exercises + course.parts[1].exercises + course.parts[2].exercises}</p>
+            <p>Number of exercises {part1.exercises + part2.exercises + part3.exercises}</p>
         </div>
     )
 }
@@ -56,8 +60,8 @@ const App = () => {
     return (
         <div>
             <Header course={course}/>
-            <Content course={course}/>
-            <Total course={course}/>
+            <Content parts={course['parts']}/>
+            <Total parts={course['parts']}/>
         </div>
     );
 }
