@@ -29,14 +29,14 @@ const Part = ({part, exercises}) => {
 }
 
 const Total = ({parts}) => {
-    const exercises = parts.map(part => part.exercises);
-    const sum = (previousValue, currentValue) => previousValue + currentValue;
-    const totalExercises = exercises.reduce(sum, 0);
+    const total = parts.reduce((totalValue, currentValue) => {
+        return totalValue + currentValue.exercises;
+    }, 0);
 
     return (
         <div>
             <strong>
-                Total of {totalExercises} exercises
+                Total of {total} exercises
             </strong>
         </div>
     )
