@@ -4,12 +4,17 @@ import Contact from "./components/Contact";
 const App = (props) => {
     const [persons, setPersons] = useState(props.persons);
     const [newName, setNewName] = useState('Enter a name');
+    const [newNumber, setNewNumber] = useState('Enter a number');
 
     const handleNameChange = (event) => {
         setNewName(event.target.value);
     }
 
-    const addName = (event) => {
+    const handleNumberChange = (event) => {
+        setNewNumber(event.target.value);
+    }
+
+    const addPerson = (event) => {
         event.preventDefault();
 
         if (persons.map(person => person.name).includes(newName)) {
@@ -17,20 +22,27 @@ const App = (props) => {
         }
 
         const nameObject = {
-            name: newName
+            name: newName,
+            number: newNumber
         }
-        
+
         setPersons(persons.concat(nameObject));
     }
 
     return (
         <div>
             <h2>Phonebook</h2>
-            <form onSubmit={addName}>
+            <form onSubmit={addPerson}>
                 <div>
                     Name: <input
                     value={newName}
                     onChange={handleNameChange}
+                />
+                </div>
+                <div>
+                    Number: <input
+                    value={newNumber}
+                    onChange={handleNumberChange}
                 />
                 </div>
                 <div>
