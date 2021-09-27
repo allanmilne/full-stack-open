@@ -9,7 +9,31 @@ const persons =  [
     {
         name: 'Nalla Enlim',
         number: '09876-543210'
-    }
+    },
+    {
+        name: 'Davey Davidson',
+        number: '09872-543210'
+    },
+    {
+        name: 'Testy McTavish',
+        number: '90987-543210'
+    },
+    {
+        name: 'Bob Milne',
+        number: '01234-567890'
+    },
+    {
+        name: 'Betty Enlim',
+        number: '09876-543210'
+    },
+    {
+        name: 'Cat Davidson',
+        number: '09872-543210'
+    },
+    {
+        name: 'Humphry McTavish',
+        number: '90987-543210'
+    },
 ]
 
 ReactDOM.render(
