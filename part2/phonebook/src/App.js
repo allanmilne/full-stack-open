@@ -1,10 +1,10 @@
 import React, {useState} from "react";
-import Contact from "./components/Contact";
+import Contacts from "./components/Contacts";
 
 const App = (props) => {
     const [newName, setNewName] = useState("");
     const [newNumber, setNewNumber] = useState("");
-    const [persons, setPersons] = useState(props.persons);
+    const [contacts, setContacts] = useState(props.contacts);
     const [searchTerm, setSearchTerm] = useState("");
 
     const handleNameChange = (event) => {
@@ -15,10 +15,10 @@ const App = (props) => {
         setNewNumber(event.target.value);
     };
 
-    const addPerson = (event) => {
+    const addContact = (event) => {
         event.preventDefault();
 
-        if (persons.map((person) => person.name).includes(newName)) {
+        if (contacts.map((contact) => contact.name).includes(newName)) {
             return window.alert(`${newName} is already added to the phonebook`);
         }
 
@@ -27,7 +27,7 @@ const App = (props) => {
             number: newNumber,
         };
 
-        setPersons(persons.concat(nameObject));
+        setContacts(contacts.concat(nameObject));
         setNewName('');
         setNewNumber('');
     };
@@ -36,12 +36,12 @@ const App = (props) => {
         const query = event.target.value;
 
         if (query !== "") {
-            const results = persons.filter((person) => {
-                return person.name.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+            const results = contacts.filter((contact) => {
+                return contact.name.toLowerCase().indexOf(query.toLowerCase()) !== -1;
             });
-            setPersons(results);
+            setContacts(results);
         } else {
-            setPersons(persons);
+            setContacts(contacts);
         }
 
         setSearchTerm(query);
@@ -58,7 +58,7 @@ const App = (props) => {
                 />
             </div>
             <h2>Add a new Contact</h2>
-            <form onSubmit={addPerson}>
+            <form onSubmit={addContact}>
                 <div>
                     Name: <input
                         placeholder={"Enter a name"}
@@ -78,13 +78,7 @@ const App = (props) => {
                 </div>
             </form>
             <h2>Numbers</h2>
-            <div>
-                <ul>
-                    {persons.map((person) => {
-                        return <Contact key={person.name} person={person}/>;
-                    })}
-                </ul>
-            </div>
+            <Contacts contacts={contacts}/>;
         </div>
     );
 };

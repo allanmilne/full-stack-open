@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom';
 import App from './App';
 
-const persons =  [
+const contacts =  [
     {
         name: 'Allan Milne',
         number: '01234-567890'
@@ -37,6 +37,6 @@ const persons =  [
 ]
 
 ReactDOM.render(
-    <App persons={persons}/>,
+    <App contacts={contacts}/>,
     document.getElementById('root')
 );
