@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import Contacts from "./components/Contacts";
+import Filter from "./components/Filter";
+import ContactForm from "./components/ContactForm";
 
 const App = (props) => {
   const [contacts, setContacts] = useState(props.contacts);
@@ -13,6 +15,10 @@ const App = (props) => {
 
   const handleNumberChange = (event) => {
     setNewNumber(event.target.value);
+  };
+
+  const handleSearchTermChange = (event) => {
+    setSearchTerm(event.target.value);
   };
 
   const addContact = (event) => {
@@ -32,10 +38,6 @@ const App = (props) => {
     setNewNumber("");
   };
 
-  const handleSearchTermChange = (event) => {
-    setSearchTerm(event.target.value);
-  };
-
   const filteredContacts = contacts.filter((contact) => {
     return contact.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1;
   });
@@ -45,36 +47,20 @@ const App = (props) => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        Filter contacts:{" "}
-        <input
-          placeholder={"Filter contacts..."}
-          value={searchTerm}
-          onChange={handleSearchTermChange}
-        />
-      </div>
+      <Filter
+        searchTerm={searchTerm}
+        handleSearchTermChange={handleSearchTermChange}
+      />
+
       <h2>Add a new Contact</h2>
-      <form onSubmit={addContact}>
-        <div>
-          Name:{" "}
-          <input
-            placeholder={"Enter a name"}
-            value={newName}
-            onChange={handleNameChange}
-          />
-        </div>
-        <div>
-          Number:{" "}
-          <input
-            placeholder={"Enter a number"}
-            value={newNumber}
-            onChange={handleNumberChange}
-          />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <ContactForm
+        addContact={addContact}
+        newName={newName}
+        handleNameChange={handleNameChange}
+        newNumber={newNumber}
+        handleNumberChange={handleNumberChange}
+      />
+
       <h2>Numbers</h2>
       <Contacts contacts={contactsToShow} />
     </div>
