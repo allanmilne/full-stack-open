@@ -1,13 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Contacts from "./components/Contacts";
 import Filter from "./components/Filter";
 import ContactForm from "./components/ContactForm";
 
-const App = (props) => {
-  const [contacts, setContacts] = useState(props.contacts);
+const App = () => {
+  const [contacts, setContacts] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+
+  const hook = () => {
+    axios.get("http://localhost:3001/contacts").then((response) => {
+      setContacts(response.data);
+    });
+  };
+
+  useEffect(hook, []);
 
   const handleNameChange = (event) => {
     setNewName(event.target.value);
