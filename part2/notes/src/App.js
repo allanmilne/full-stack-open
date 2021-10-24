@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import noteService from "./services/notes";
 import Note from "./components/Note";
 
 const App = () => {
@@ -8,13 +8,10 @@ const App = () => {
   const [showAll, setShowAll] = useState(true);
 
   useEffect(() => {
-    console.log("effect");
-    axios.get("http://localhost:3001/notes").then((response) => {
-      console.log("promise fulfilled");
-      setNotes(response.data);
+    noteService.getAll().then((initialNotes) => {
+      setNotes(initialNotes);
     });
   }, []);
-  console.log("render", notes.length, "notes");
 
   const addNote = (event) => {
     event.preventDefault();
@@ -23,17 +20,13 @@ const App = () => {
       date: new Date().toISOString(),
       important: Math.random() < 0.5,
     };
-
-    axios.post("http://localhost:3001/notes", noteObject).then((response) => {
-      console.log(response);
-
-      setNotes(notes.concat(noteObject));
+    noteService.create(noteObject).then((returnedNote) => {
+      setNotes(notes.concat(returnedNote));
       setNewNote("");
     });
   };
 
   const handleNoteChange = (event) => {
-    console.log(event.target.value);
     setNewNote(event.target.value);
   };
 
@@ -42,18 +35,13 @@ const App = () => {
     : notes.filter((notes) => notes.important);
 
   const toggleImportanceOf = (id) => {
-    const url = `http://localhost:3001/notes/${id}`;
-
     // loop through notes and find the first element that matches our passed in id and assign it to a variable
     const note = notes.find((note) => note.id === id);
-
     // spreading our note object, update the value of important to the opposite of it's previous value
     const changedNote = { ...note, important: !note.important };
 
     // Make a PUT request to the server with our change
-    axios.put(url, changedNote).then((response) => {
-      console.log(response);
-
+    noteService.update(id, changedNote).then((returnedNote) => {
       // now we want to update the state of notes with the server response
 
       /*
@@ -64,7 +52,7 @@ const App = () => {
        * we simply copy the item from the old array into the new array.
        * If the condition is false, then the note object returned by the server is added to the array instead.
        */
-      setNotes(notes.map((note) => (note.id !== id ? note : response.data)));
+      setNotes(notes.map((note) => (note.id !== id ? note : returnedNote)));
     });
   };
 
