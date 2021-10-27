@@ -48,6 +48,15 @@ const App = () => {
     setNewNumber("");
   };
 
+  const deleteContact = (contactToDelete) => {
+    if (window.confirm(`Delete ${contactToDelete.name}`)) {
+      contactService.deleteContact(contactToDelete.id).then(() => {
+        // remove contactToDelete from state
+        setContacts(contacts.filter((contact) => contact !== contactToDelete));
+      });
+    }
+  };
+
   const filteredContacts = contacts.filter((contact) => {
     return contact.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1;
   });
@@ -72,7 +81,7 @@ const App = () => {
       />
 
       <h2>Numbers</h2>
-      <Contacts contacts={contactsToShow} />
+      <Contacts contacts={contactsToShow} deleteContact={deleteContact} />
     </div>
   );
 };

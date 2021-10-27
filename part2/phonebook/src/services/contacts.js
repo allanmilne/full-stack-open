@@ -17,8 +17,15 @@ const update = (id, contactObject) => {
   return request.then((response) => response.data);
 };
 
+const deleteContact = (id) => {
+  const request = axios.delete(`${baseURL}/${id}`);
+  return request.then((response) => response.data);
+};
+
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   create,
   getAll,
   update,
+  deleteContact
 };
