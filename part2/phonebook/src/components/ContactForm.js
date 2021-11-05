@@ -26,7 +26,7 @@ const ContactForm = ({
         />
       </div>
       <div>
-        <button type="submit">add</button>
+        <button type="submit">Add</button>
       </div>
     </form>
   );

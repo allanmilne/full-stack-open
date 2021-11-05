@@ -6,8 +6,8 @@ import contactService from "./services/contacts";
 
 const App = () => {
   const [contacts, setContacts] = useState([]);
-  const [newName, setNewName] = useState("");
-  const [newNumber, setNewNumber] = useState("");
+  const [name, setName] = useState("");
+  const [number, setNumber] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
@@ -17,35 +17,43 @@ const App = () => {
   }, []);
 
   const handleNameChange = (event) => {
-    setNewName(event.target.value);
+    setName(event.target.value);
   };
 
   const handleNumberChange = (event) => {
-    setNewNumber(event.target.value);
+    setNumber(event.target.value);
   };
 
   const handleSearchTermChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
-  const addContact = (event) => {
+  const handleAddContact = (event) => {
     event.preventDefault();
 
-    if (contacts.map((contact) => contact.name).includes(newName)) {
-      return window.alert(`${newName} is already added to the phonebook`);
-    }
-
-    const newContact = {
-      name: newName,
-      number: newNumber,
+    const contact = {
+      name: name,
+      number: number,
     };
 
-    contactService.create(newContact).then((returnedContact) => {
+    if (
+      existing(contact) &&
+      window.confirm(
+        `${name} is already added to the phonebook, replace the old number with a new one?`
+      )
+    ) {
+      updateContact(existing(contact), contact);
+    }
+
+    if (!existing(contact)) {
+      createContact(contact);
+    }
+  };
+
+  const createContact = (contact) => {
+    contactService.create(contact).then((returnedContact) => {
       setContacts(contacts.concat(returnedContact));
     });
-
-    setNewName("");
-    setNewNumber("");
   };
 
   const deleteContact = (contactToDelete) => {
@@ -56,6 +64,21 @@ const App = () => {
       });
     }
   };
+
+  const updateContact = (existingContact, updatedContactInfo) => {
+    contactService
+      .update(existingContact.id, updatedContactInfo)
+      .then((returnedContact) => {
+        setContacts(
+          contacts.map((contact) =>
+            contact.id !== existingContact.id ? contact : returnedContact
+          )
+        );
+      });
+  };
+
+  const existing = (contact) =>
+    contacts.find((existingContact) => existingContact.name === contact.name);
 
   const filteredContacts = contacts.filter((contact) => {
     return contact.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1;
@@ -73,10 +96,10 @@ const App = () => {
 
       <h2>Add a new Contact</h2>
       <ContactForm
-        addContact={addContact}
-        newName={newName}
+        addContact={handleAddContact}
+        name={name}
         handleNameChange={handleNameChange}
-        newNumber={newNumber}
+        number={number}
         handleNumberChange={handleNumberChange}
       />
 
